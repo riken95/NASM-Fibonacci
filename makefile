@@ -1,7 +1,7 @@
 nom = fibonacci
 all: clean
 	nasm -f elf $(nom).asm
-	gcc -m32 -o $(nom) $(nom).o -lc
+	gcc -m32 -o $(nom) $(nom).o -lc -no-pie
 	./$(nom)
 
 

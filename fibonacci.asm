@@ -6,7 +6,6 @@
         %define  STDERR     2
         %define  MAX_NUMBER   5000
 
-
 section .data
     somme dd 0
     u0 dd 0
@@ -14,8 +13,9 @@ section .data
     utemp dd 0
     index dd 1
     ITERATION_MAX db 20 ;Not a constant because we assign it with aoi
-
-    format: db "u %d = %d." , 10
+    message: db "Entrez un nombre",10,0
+    messagelen: equ $-message
+    format db "u %d = %d" ,10, 0
 
 SECTION .bss
     input: resd MAX_NUMBER
@@ -27,6 +27,13 @@ section .text
 
 main:
 
+    ;Affichage de la demande
+    mov eax, 4
+    mov ebx,1
+    mov ecx,message
+    mov edx,messagelen
+    int 80h
+    
     ;Lecture argument
     mov EAX, SYS_READ
     mov EBX, STDIN
@@ -42,8 +49,6 @@ main:
 
     ;MAJ du nombre d'itérations
     mov [ITERATION_MAX], DWORD eax
-
-    
     
     ; Boucle for
 
@@ -75,9 +80,6 @@ main:
         call printf
         add esp, 12
         
-
-    
-
         ; Incrémentation
         mov eax, [index]
         add eax, 1
@@ -88,7 +90,7 @@ main:
         mov ebx, [ITERATION_MAX]
 
         cmp eax, ebx
-        jl boucle_for
+        jle boucle_for
 
     fin_programme:
         mov eax, 1
